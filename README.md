@@ -146,3 +146,7 @@ This simple scheduler ignores requested duration and priority. Requests are admi
 ## Suggested Reading Order
 
 The schedulers were developed in the order presented above. Whilst each can be considered independently, they are most naturally read sequentially. Design choices in earlier work often informed later implementation decisions.
+
+## Related Work
+
+This project extends ideas first explored in the lift-simulation project, applying event-driven modelling and structured logging to a concurrent web environment.
