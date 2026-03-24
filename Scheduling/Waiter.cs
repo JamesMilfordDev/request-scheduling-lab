@@ -1,9 +1,13 @@
 // An immutable simple data holder with no methods.
 // An instance represents a request waiting to be admitted.
-// Created by certain schedulers when a request must wait.
+// Created by certain schedulers (SjfScheduler and PrioritySjfScheduler)
+// when a request must wait.
 
 // Simpler schedulers (FifoScheduler and PriorityScheduler)
 // represent waiting requests directly with TaskCompletionSource instances.
+
+// The more complex scheduler BoundedSjfScheduler instead represents
+// waiting requests with BoundedSjfWaiter instances.
 
 using System.Threading.Tasks;
 

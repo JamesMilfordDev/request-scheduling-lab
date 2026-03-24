@@ -174,13 +174,29 @@ Requests are admitted according to their requested duration (shortest duration f
 Requests are admitted according to their
 priority level (High > Medium > Low). Requests within the same priority level are admitted in FIFO order.
 
-This simple privileged algorithm optimises for fairness within priority class. It risks both poor global efficiency and poor global fairness.
+This simple privileged algorithm optimises for fairness within each priority class. It risks both poor global efficiency and poor global fairness.
 
 ### Priority with SJF
 
-Requests are admitted according to their priority level (High > Medium > Low). Requests witin the same priority level are admitted according to their requested duration (shortest duration first). Requests with equal priority and requested durations are admitted in FIFO order.
+Requests are admitted according to their priority level (High > Medium > Low). Requests within the same priority level are admitted according to their requested duration (shortest duration first). Requests with equal priority and requested durations are admitted in FIFO order.
 
-This privileged algorithm complements the Priority algorithm. It optimises for efficiency within priority class. It risks both poor global efficiency and poor global fairness.
+This privileged algorithm complements the Priority algorithm. It optimises for efficiency within each priority class. It risks both poor global efficiency and poor global fairness.
+
+### Bounded SJF
+
+We have our two extreme global scheduling policies: FIFO and SJF.
+
+We also have two complementary privileged algorithms: Priority and Priority with SJF.
+
+Finally, a global tradeoff algorithm is implemented: Bounded SJF.
+
+Requests are selected based on requested duration, with a fairness guarantee built in:
+
+If a request has a `SkippedOverCount` greater than or equal to the `MaxSkippedOverCount`, choose the request with the greatest `SkippedOverCount`. If there are ties in `SkippedOverCount`, select according to FIFO.
+
+If no request has a `SkippedOverCount` greater than or equal to the `MaxSkippedOverCount`, choose the request with the lowest requested duration. If there are ties in requested duration, select according to FIFO.
+
+This global tradeoff algorithm strikes a balance between global efficiency and global fairness: we still process requests in a globally efficient way, but we also implement a boundary to prevent extreme global unfairness.
 
 ## Suggested Reading Order
 
@@ -190,13 +206,19 @@ The schedulers can be approached in two ways. Both perspectives are useful: one 
 
 Start with the extreme global policies FIFO and SJF.
 
-Then move to Priority and PrioritySJF.
+Then there are two branches.
+
+For two complementary privileged algorithms, see Priority and Priority with SJF.
+
+For a global tradeoff algorithm, see Bounded SJF.
 
 ### By Implementation Complexity
 
-FIFO -> Priority -> SJF -> PrioritySJF.
+FIFO -> Priority -> SJF -> Priority with SJF -> Bounded SJF.
 
 This follows the evolution of the codebase, introducing increasingly complex scheduling structures.
+
+For example, the FIFO and Priority schedulers both represent a waiting request with a simple TaskCompletionSource instance. SJF and Priority with SJF both use the immutable `Waiter` class that stores a TCS alongside the `RequestedDuration` and a `SequenceNumber` for the request. Bounded SJF uses the richer `BoundedSjfWaiter`, which is checked and mutated as part of the scheduling process.
 
 ## Related Work
 
