@@ -56,6 +56,8 @@ The application writes two CSV files:
 - `<base>_events.csv`
 - `<base>_requests.csv`
 
+Sample output files can be found in the `SampleOutput/` folder.
+
 ### Event Log
 
 The first CSV is the event log. The following events are recorded:
@@ -142,6 +144,10 @@ This consists of:
 
 This simple scheduler ignores requested duration and priority. Requests are admitted in a simple FIFO order.
 
+### Priority
+
+This scheduler ignores requested duration. Requests are admitted according to their
+priority level (High > Medium > Low). Requests within the same priority level are admitted in FIFO order.
 
 ## Suggested Reading Order
 
