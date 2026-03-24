@@ -163,18 +163,24 @@ The schedulers implemented in this project illustrate these different approaches
 
 ### FIFO
 
-This simple scheduler ignores requested duration and priority. Requests are admitted in a simple FIFO order.
+Requests are admitted in a simple FIFO order.
 
 ### Shortest Job First
 
-This scheduler ignores priority. Requests are admitted according to their requested duration (shortest duration first). Requests with equal durations are admitted in FIFO order.
+Requests are admitted according to their requested duration (shortest duration first). Requests with equal durations are admitted in FIFO order.
 
 ### Priority
 
-This scheduler ignores requested duration. Requests are admitted according to their
+Requests are admitted according to their
 priority level (High > Medium > Low). Requests within the same priority level are admitted in FIFO order.
 
-This simple privileged algorithm risks both poor global efficiency and poor global fairness. It optimises for fairness restricted to High priority requests.
+This simple privileged algorithm optimises for fairness within priority class. It risks both poor global efficiency and poor global fairness.
+
+### Priority with SJF
+
+Requests are admitted according to their priority level (High > Medium > Low). Requests witin the same priority level are admitted according to their requested duration (shortest duration first). Requests with equal priority and requested durations are admitted in FIFO order.
+
+This privileged algorithm complements the Priority algorithm. It optimises for efficiency within priority class. It risks both poor global efficiency and poor global fairness.
 
 ## Suggested Reading Order
 
@@ -184,11 +190,11 @@ The schedulers can be approached in two ways. Both perspectives are useful: one 
 
 Start with the extreme global policies FIFO and SJF.
 
-Then move to Priority.
+Then move to Priority and PrioritySJF.
 
 ### By Implementation Complexity
 
-FIFO -> Priority -> SJF.
+FIFO -> Priority -> SJF -> PrioritySJF.
 
 This follows the evolution of the codebase, introducing increasingly complex scheduling structures.
 

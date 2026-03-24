@@ -113,29 +113,27 @@ public class SjfScheduler : IScheduler
             {
                 this.HasActiveRequest = false;
             }
-
-            foreach (Waiter waiter in this.WaitingList)
+            else
             {
-                if (waiter.RequestedDuration < lowestRequestedDuration)
+                foreach (Waiter waiter in this.WaitingList)
                 {
-                    next = waiter;
-                    lowestRequestedDuration = waiter.RequestedDuration;
-                    lowestSequenceNumber = waiter.SequenceNumber;
-                }
-                
-                else if (waiter.RequestedDuration == lowestRequestedDuration)
-                {
-                    if (waiter.SequenceNumber < lowestSequenceNumber)
+                    if (waiter.RequestedDuration < lowestRequestedDuration)
                     {
                         next = waiter;
+                        lowestRequestedDuration = waiter.RequestedDuration;
                         lowestSequenceNumber = waiter.SequenceNumber;
                     }
+                    
+                    else if (waiter.RequestedDuration == lowestRequestedDuration)
+                    {
+                        if (waiter.SequenceNumber < lowestSequenceNumber)
+                        {
+                            next = waiter;
+                            lowestSequenceNumber = waiter.SequenceNumber;
+                        }
+                    }
                 }
-            }
-
-            if (next != null)
-            {
-                this.WaitingList.Remove(next);
+                this.WaitingList.Remove(next!);
             }
         }
 
