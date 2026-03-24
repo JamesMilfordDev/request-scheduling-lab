@@ -149,6 +149,10 @@ This simple scheduler ignores requested duration and priority. Requests are admi
 This scheduler ignores requested duration. Requests are admitted according to their
 priority level (High > Medium > Low). Requests within the same priority level are admitted in FIFO order.
 
+### Shortest Job First
+
+This scheduler ignores priority. Requests are admitted according to their requested duration (shortest duration first). Requests with ewqual durations are admitted in FIFO order.
+
 ## Suggested Reading Order
 
 The schedulers were developed in the order presented above. Whilst each can be considered independently, they are most naturally read sequentially. Design choices in earlier work often informed later implementation decisions.

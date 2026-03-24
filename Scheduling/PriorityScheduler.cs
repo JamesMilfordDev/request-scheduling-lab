@@ -85,18 +85,6 @@ public class PriorityScheduler : IScheduler
 
         lock (this.Lock)
         {
-            // If there are other requests waiting, we set the Task object
-            // corresponding to the first such request to completed.
-            // That is, we admit that request.
-            // We keep this.HasActiveRequest.
-            // If there are no other requests waiting, we set this.HasActiveRequest
-            // to false.
-
-            // Note: if there are requests waiting, we only set the corresponding
-            // Task object to completed once we have exited the lock block. This
-            // is so that any resumed continuation does not run whilst the lock object
-            // is still being held (whilst inside the "critical section").
-
             if (this.HighWaitingQueue.Count > 0)
             {
                 next = this.HighWaitingQueue.Dequeue();

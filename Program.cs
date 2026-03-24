@@ -30,8 +30,11 @@ public class Program
             case "priority":
                 builder.Services.AddSingleton<IScheduler, PriorityScheduler>();
                 break;
+            case "sjf":
+                builder.Services.AddSingleton<IScheduler, SjfScheduler>();
+                break;
             default:
-                throw new ArgumentException("Invalid scheduler type: expected one of: fifo; priority.");
+                throw new ArgumentException("Invalid scheduler type: expected one of: fifo, priority, sjf.");
         }
 
         // Register the log class. We again use AddSingleton so that the same
