@@ -137,6 +137,27 @@ This consists of:
 
 - Reporting: the generation of request summaries (metadata, timestamps, and derived metrics), and the writing of the event log and request summaries record.
 
+## Scheduling Algorithm Evaluation Framework
+
+At a global level (at which we don't privilege one kind of request over another), there are two primary evaluation metrics for scheduling algorithms:
+
+- Efficiency
+- Fairness
+
+Efficiency is measured as the average request waiting time (arrival to admission). Fairness measurements can either focus on waiting time, or on the number of requests processed whilst a request is waiting (call this the SkippedOverCount of a request). A simple measurement is the maximum waiting time.
+
+At the global level, two basic scheduling algorithms mark the extremes:
+
+- FIFO: maximises fairness at the expense of efficiency.
+- SJF: maximises efficiency at the expense of fairness.
+
+Scheduling algorithms beyond these two fall into one of two categories:
+
+- Global tradeoff algorithms: these iterate on SJF/FIFO to balance global efficiency and global fairness.
+
+- Privileged algorithms: these explicitly prioritise certain kinds of request, and therefore do not optimise purely global metrics.
+
+The schedulers implemented in this project illustrate these different approaches.
 
 ## Scheduling Algorithms Implemented
 
@@ -144,18 +165,32 @@ This consists of:
 
 This simple scheduler ignores requested duration and priority. Requests are admitted in a simple FIFO order.
 
+### Shortest Job First
+
+This scheduler ignores priority. Requests are admitted according to their requested duration (shortest duration first). Requests with equal durations are admitted in FIFO order.
+
 ### Priority
 
 This scheduler ignores requested duration. Requests are admitted according to their
 priority level (High > Medium > Low). Requests within the same priority level are admitted in FIFO order.
 
-### Shortest Job First
-
-This scheduler ignores priority. Requests are admitted according to their requested duration (shortest duration first). Requests with ewqual durations are admitted in FIFO order.
+This simple privileged algorithm risks both poor global efficiency and poor global fairness. It optimises for fairness restricted to High priority requests.
 
 ## Suggested Reading Order
 
-The schedulers were developed in the order presented above. Whilst each can be considered independently, they are most naturally read sequentially. Design choices in earlier work often informed later implementation decisions.
+The schedulers can be approached in two ways. Both perspectives are useful: one for understanding the conceptual framework, and one for understanding the evolution of the codebase.
+
+### By Conceptual Framework
+
+Start with the extreme global policies FIFO and SJF.
+
+Then move to Priority.
+
+### By Implementation Complexity
+
+FIFO -> Priority -> SJF.
+
+This follows the evolution of the codebase, introducing increasingly complex scheduling structures.
 
 ## Related Work
 
